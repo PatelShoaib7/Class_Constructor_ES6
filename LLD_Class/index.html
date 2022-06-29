@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>LOW LEVAL DESIGN</h1>
+    
+</body>
+</html>
+<script>
+    //0.Vehical
+    //1.Praking Lot
+    //2.Parking Floors
+    //3.Parking Slots
+    //4.Ticket
+
+     class vehical{
+         constructor(type,regNumber,color)
+            {
+                this._type=type;
+                this._rgNumber=regNumber;
+                this._color=color;
+            }
+            //this the getter method
+        get type()
+            {
+                return this._type;
+            }
+            //this is the setter method
+         set type(value)
+            {
+                this._type=value
+            }
+     }
+     class Car extends vehical{
+            constructor(regNumber,color)
+            {
+                super("Car",regNumber,color)
+            }
+        }
+     class Bike extends vehical{
+            constructor(regNumber,color)
+            {
+                super("Bike",regNumber,color)
+            }
+        }
+    class Truck extends vehical{
+            constructor(regNumber,color)
+            {
+                super("Truck",regNumber,color)
+            }
+        }
+    let result = new Car("Mh-24 1235","Black")
+    let result2 = new Bike("Mh-24 4657","Red")
+    let result3 = new Truck("Mh-24 7895","Blue")
+    console.log(result)
+                  //console.log(result.type)
+     console.log(result2)
+                  //console.log(result2.type)
+    console.log(result3)
+                  //console.log(result3.type)
+    //u can eaisly accesss the values without writting the type() just result.type
+
+
+
+
+    
+   class Slot{
+       constructor(number,type_parking)
+       {
+           this.number=number;
+           this.type=type_parking;
+           this._isBooked=false;
+           //_ _ _this is return to the proprty to written the value  in getter 
+        }
+        get isBooked()
+            {
+                return this._isBooked
+            }
+        set isBooked(value)
+            {
+                this._isBooked=value;
+            }
+   }
+
+   let result_slot = new Slot("Sinhgad parking")
+   console.log(result_slot)
+
+   class ParkingFloor {
+       constructor(floorNumber,maxFloor)
+       {
+           this.floorNumber=floorNumber;
+           this._Parkinspots=[];  //indocates the max num of spots or number of pargind rooms 
+
+           
+      //for creating the mulipal parking slots 
+      //so loop will have to run up to maxFloor 
+       
+        for(var i=0; i<maxFloor; i++)
+        {
+             if( i === 0)
+                {
+                    //push Truck
+                    this._Parkinspots.push(new Slot("Truck",i)) //here i ---> is slot Number to pass
+
+                }
+             if( i === 1)
+                {
+                    //push Bikes
+                    this._Parkinspots.push(new Slot("Bike",i)) //here i ---> is slot Number to pass
+                }
+            else{
+                    //Push Cars
+                    this._Parkinspots.push(new Slot("Car",i)) //here i ---> is slot Number to pass
+                }
+        }
+       }
+       get Parkinspots()
+       {
+           return this._Parkinspots
+       }
+    //    set  Parkinspots(value)
+    //    {
+    //        this._Parkinspots=value;
+    //    }
+   }
+   let result_parkFloor = new ParkingFloor(0,3)
+  console.log(result_parkFloor)
+
+
+
+
+
+  //ParkingFloor ----> holding  slots 
+  //ParkingLots -----> multipal floors    1 ek parking lot ke liy 3 lots 
+  class ParkingLot{
+       constructor(number)
+       {
+           this._floors=[];
+           this._numberofFloor=number;
+
+
+           for(var i=0; i<number; i++)
+           {
+               this._floors[i] = new ParkingFloor(i,number)
+           }
+       }
+       get numberofFloor()
+       {
+           return   this._numberofFloor
+       }
+       get floors()
+       {
+           return this._floors
+       }
+       set floors(value)
+       {
+           this._floors=value;
+       }
+
+       parkVehical(vehical)
+       {
+           let Slot = this.FindSlot(vehical.type)
+           if(Slot)
+           {
+               console.log("No Slot")
+               return false
+           }
+           this.bookSlot(Slot)
+           let ticket = new Ticket{Slot.floorNumber,SLOt.Slot.number}
+       }
+
+  // for whivh particular vehical need the type of vehical so pass it in FindSlot 
+    FindSlot(type)
+    {
+           //flooor    Normally Parking Lots Have many floors
+
+           //this loop shpws all the slots presents
+           for(var i=0; i<this._numberofFloor; i++)
+           {
+
+              for(let Slot of this._floors[i]._Parkinspots)
+              {
+                //   console.log("slotttttt",Slot)
+                    if(Slot.type === type  && !Slot.isBooked)
+                    {
+                        //console.log(slot)
+                        return {floorNumber: i , Slot:Slot}
+                     }    
+             } 
+
+         }
+         return false
+    }
+
+        bookSlot(Slot)
+        {
+            Slot.Slot.isBoooked=true;
+            console.log("isBoooked",Slot)
+            
+            return true
+        }
+
+}
+
+class Ticket{
+    constructor(floorNumber,slotNumber)
+    {
+        this.floorNumber=floorNumber;
+        this.slotNumber=slotNumber;
+
+        this.issuedAt = new Date()
+
+    }
+}
+let result_parkingLot = new ParkingLot(3)
+result_parkingLot.FindSlot("Bike")
+console.log(result_parkingLot.FindSlot())
+
+ let result_FindSlot = new FindSlot(3)
+ console.log(result_FindSlot.FindSlot)
+
+//now its time too book the slot
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
